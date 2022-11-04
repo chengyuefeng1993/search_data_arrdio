@@ -1,0 +1,21 @@
+<template>
+  <NConfigProvider :locale="zhCN" :dateLocale="dateZhCN">
+    <div class="myapp">
+      <router-view></router-view>
+    </div>
+  </NConfigProvider>
+</template>
+
+<script setup lang='ts'>
+import { dateZhCN, useOsTheme, zhCN, darkTheme, NConfigProvider } from 'naive-ui';
+import { computed } from 'vue';
+
+
+const osTheme = useOsTheme()
+const theme = computed(() => (osTheme.value === 'dark' ? darkTheme : null))
+
+</script>
+
+<style scoped>
+
+</style>

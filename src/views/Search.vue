@@ -7,11 +7,13 @@
         <NavBar />
       </NLayoutSider>
       <NLayoutContent embedded :nativeScrollbar="false">
-        <router-view v-slot="{ Component }">
-          <keep-alive>
-            <component :is="Component" />
-          </keep-alive>
-        </router-view>
+        <NScrollbar style="max-height: 100vh;">
+          <router-view v-slot="{ Component }">
+            <keep-alive>
+              <component :is="Component" />
+            </keep-alive>
+          </router-view>
+        </NScrollbar>
       </NLayoutContent>
     </NLayout>
   </div>

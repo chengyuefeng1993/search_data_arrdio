@@ -1,9 +1,11 @@
 <template>
   <NConfigProvider :locale="zhCN" :dateLocale="dateZhCN">
     <n-message-provider>
-      <div class="myapp">
-        <router-view></router-view>
-      </div>
+      <n-notification-provider>
+        <div class="myapp">
+          <router-view></router-view>
+        </div>
+      </n-notification-provider>
     </n-message-provider>
   </NConfigProvider>
 </template>

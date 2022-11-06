@@ -2,124 +2,231 @@
   <div class="label-main">
     <div class="label-bar">
       <NSpace wrap :size="5">
-        <n-date-picker v-model:value="data.time" type="datetimerange" :shortcuts="shoutCuts" style="width: 365px"/>
+        <n-date-picker
+          v-model:value="data.time"
+          type="datetimerange"
+          :shortcuts="shoutCuts"
+          style="width: 365px"
+        />
         <n-button-group>
           <n-button @click="changeTime('back')" :focusable="false" round>
             <template #icon>
               <n-icon>
-                <ArrowBack/>
+                <ArrowBack />
               </n-icon>
             </template>
           </n-button>
           <n-button @click="changeTime('today')" :focusable="false">
             <template #icon>
               <n-icon>
-                <TodayOutline/>
+                <TodayOutline />
               </n-icon>
             </template>
           </n-button>
           <n-button @click="changeTime('foward')" :focusable="false" round>
             <template #icon>
               <n-icon>
-                <ArrowForward/>
+                <ArrowForward />
               </n-icon>
             </template>
           </n-button>
         </n-button-group>
-        <n-select v-model:value="data.stageName" :options="options" style="width: 75px"/>
+        <n-select
+          v-model:value="data.stageName"
+          :options="options"
+          style="width: 75px"
+        />
         <n-input-number v-model:value="data.skipNum" style="width: 170px">
           <template #prefix>
             <span>暂跳额度：</span>
           </template>
         </n-input-number>
         <n-input-group>
-          <n-input placeholder="包ID" v-model:value="data.id" clearable style="width: 130px" :maxlength="5"
-                   show-count @keyup.enter="onSearch"/>
+          <n-input
+            placeholder="包ID"
+            v-model:value="data.id"
+            clearable
+            style="width: 130px"
+            :maxlength="5"
+            show-count
+            @keyup.enter="onSearch"
+          />
           <n-button :focusable="false" @click="onSearch">搜索</n-button>
         </n-input-group>
       </NSpace>
-
     </div>
-    <NDivider style="margin: 0;padding: 0;"/>
+    <NDivider style="margin: 0; padding: 0" />
+    <n-spin :show="isLoading">
+      <div class="label-view">
+        <StageData/>
+      </div>
+    </n-spin>
   </div>
 </template>
 
-<script setup lang='ts'>
-import {ref} from 'vue';
+<script setup lang="ts">
+import { computed, ref} from "vue";
 import dayjs from "dayjs";
-import {ArrowBack, ArrowForward, TodayOutline} from '@vicons/ionicons5'
-import {useMessage} from "naive-ui";
-import type {Skip, Stage, Tag} from "@/types";
+import { ArrowBack, ArrowForward, TodayOutline } from "@vicons/ionicons5";
+import { useMessage, useNotification } from "naive-ui";
+import StageData from '@/components/labelcomp/StageData.vue'
+import type { Skip, Stage, Tag } from "@/types";
+import axios from "axios";
 
+const notification = useNotification();
+const labelGet = axios.create({
+  baseURL: "http://114.116.41.110:4002",
+  timeout: 15000,
+});
+
+labelGet.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    if (
+      error.code === "ECONNABORTED" ||
+      error.message === "Network Error" ||
+      error.message.includes("timeout")
+    ) {
+      notification.error({
+        content: "请求超时，请重试！",
+      });
+      return "timeOut";
+    } else {
+      console.log(error);
+    }
+    return Promise.resolve(error.response);
+  }
+);
 
 const data = ref({
-  id: '' as string,
+  id: "" as string,
   time: [
-    dayjs().startOf('day').valueOf(),
-    dayjs().add(1, 'day').startOf('day').valueOf()
+    dayjs().startOf("day").valueOf(),
+    dayjs().add(1, "day").startOf("day").valueOf(),
   ] as [number, number],
-  stageName: 'label' as string,
+  stageName: "label" as string,
   skipNum: 100 as number,
-})
-const stageList = ref({} as Stage)
-const tagList = ref([] as Array<Tag>)
-const skipList = ref([] as Array<Skip>)
+  stageList:{} as Stage,
+  tagList:[] as Tag[],
+  skipList:[] as Skip[],
+  isLoadingNum: 0 as number,
+});
+
+
+const isLoading = computed(() => {
+  if (data.value.isLoadingNum == 0) return false;
+  else if (data.value.isLoadingNum == 1) return true;
+  else if (data.value.isLoadingNum == 2) return true;
+  else if (data.value.isLoadingNum == 3) return false;
+});
+
 const options = [
   {
-    label: '标注',
-    value: 'label',
+    label: "标注",
+    value: "label",
   },
   {
-    label: '一审',
-    value: 'review',
-  }
-]
+    label: "一审",
+    value: "review",
+  },
+];
 const shoutCuts = {
-  '7天': () => [
-    dayjs().subtract(7, 'day').valueOf(),
-    dayjs().add(1, 'day').startOf('day').valueOf()
-  ],
-  '半个月': () => [
-    dayjs().subtract(15, 'day').valueOf(),
-    dayjs().add(1, 'day').startOf('day').valueOf()
-  ],
-  '一个月': () => [
-    dayjs().subtract(30, 'day').valueOf(),
-    dayjs().add(1, 'day').startOf('day').valueOf()
-  ]
-}
+  "7天": () =>
+    [
+      dayjs().subtract(7, "day").valueOf(),
+      dayjs().add(1, "day").startOf("day").valueOf(),
+    ] as [number, number],
+  半个月: () =>
+    [
+      dayjs().subtract(15, "day").valueOf(),
+      dayjs().add(1, "day").startOf("day").valueOf(),
+    ] as [number, number],
+  一个月: () =>
+    [
+      dayjs().subtract(30, "day").valueOf(),
+      dayjs().add(1, "day").startOf("day").valueOf(),
+    ] as [number, number],
+};
 const changeTime = (to: string) => {
-  if (to === 'foward') {
+  if (to === "foward") {
     data.value.time = [
-      dayjs(data.value.time[0]).add(1, 'day').startOf('day').valueOf(),
-      dayjs(data.value.time[1]).add(1, 'day').startOf('day').valueOf()
-    ]
-  } else if (to === 'today') {
+      dayjs(data.value.time[0]).add(1, "day").startOf("day").valueOf(),
+      dayjs(data.value.time[1]).add(1, "day").startOf("day").valueOf(),
+    ];
+  } else if (to === "today") {
     data.value.time = [
-      dayjs().startOf('day').valueOf(),
-      dayjs().add(1, 'day').startOf('day').valueOf()
-    ]
-  } else if (to === 'back') {
+      dayjs().startOf("day").valueOf(),
+      dayjs().add(1, "day").startOf("day").valueOf(),
+    ];
+  } else if (to === "back") {
     data.value.time = [
-      dayjs(data.value.time[0]).subtract(1, 'day').startOf('day').valueOf(),
-      dayjs(data.value.time[1]).subtract(1, 'day').startOf('day').valueOf()
-    ]
+      dayjs(data.value.time[0]).subtract(1, "day").startOf("day").valueOf(),
+      dayjs(data.value.time[1]).subtract(1, "day").startOf("day").valueOf(),
+    ];
   }
-}
-const message = useMessage()
+};
+const message = useMessage();
 const onSearch = () => {
-  if (data.value.id == '') {
-    message.error('ID为空', {
-      duration: 1500
-    })
+  if (data.value.id == "") {
+    message.error("ID为空", {
+      duration: 1500,
+    });
   } else {
-
+    data.value.isLoadingNum = 0;
+    getStageData();
+    getTagData();
+    getSkipData();
   }
-}
+};
+
+const getStageData = async () => {
+  await labelGet
+    .get("/stagedata", {
+      params: {
+        sourceid: data.value.id,
+      },
+    })
+    .then((res) => {
+      data.value.stageList = res.data.result;
+      console.log(data.value.stageList)
+    });
+};
+const getTagData = async () => {
+  await labelGet
+    .get("/tagdata", {
+      params: {
+        sourceid: data.value.id,
+        tmstart: data.value.time[0],
+        tmstop: data.value.time[1],
+        stagename: data.value.stageName,
+      },
+    })
+    .then((res) => {
+      let list = res.data.result
+      data.value.tagList = list.splice(0,list.length-2)
+    });
+};
+const getSkipData = async () => {
+  await labelGet
+    .get("/skipdata", {
+      params: {
+        sourceid: data.value.id,
+        stagename: data.value.stageName,
+      },
+    })
+    .then((res) => {
+      data.value.skipList = res.data.result;
+    });
+};
 </script>
 
 <style scoped>
 .label-bar {
   padding: 0 10px 10px 10px;
+}
+.label-view{
+  padding: 10px;
 }
 </style>

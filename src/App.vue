@@ -1,5 +1,5 @@
 <template>
-  <NConfigProvider :locale="zhCN" :dateLocale="dateZhCN">
+  <NConfigProvider :locale="zhCN" :dateLocale="dateZhCN" :theme="theme">
     <n-message-provider>
       <n-notification-provider>
         <div class="myapp">

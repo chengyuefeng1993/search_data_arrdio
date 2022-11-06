@@ -12,21 +12,21 @@
           <n-button @click="changeTime('back')" :focusable="false" round>
             <template #icon>
               <n-icon>
-                <ArrowBack />
+                <ArrowBack/>
               </n-icon>
             </template>
           </n-button>
           <n-button @click="changeTime('today')" :focusable="false">
             <template #icon>
               <n-icon>
-                <TodayOutline />
+                <TodayOutline/>
               </n-icon>
             </template>
           </n-button>
           <n-button @click="changeTime('foward')" :focusable="false" round>
             <template #icon>
               <n-icon>
-                <ArrowForward />
+                <ArrowForward/>
               </n-icon>
             </template>
           </n-button>
@@ -55,29 +55,40 @@
         </n-input-group>
       </NSpace>
     </div>
-    <NDivider style="margin: 0; padding: 0" />
+    <NDivider style="margin: 0; padding: 0"/>
     <n-spin :show="isLoading">
-      <div class="label-view">
-        <StageData/>
+      <div class="label-view" v-show="isShow">
+        <StageData :stageList="data.stageList"/>
+        <n-grid cols="3" item-responsive :x-gap="10">
+          <n-grid-item span="0 768:2">
+            <TagData :tagList="data.tagList" :id="data.id" :time="data.time"/>
+          </n-grid-item>
+          <n-grid-item span="0 768:1">
+            <SkipData :skipList="data.skipList" :skipNum="data.skipNum"/>
+          </n-grid-item>
+        </n-grid>
       </div>
     </n-spin>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref} from "vue";
+import {computed, ref} from "vue";
 import dayjs from "dayjs";
-import { ArrowBack, ArrowForward, TodayOutline } from "@vicons/ionicons5";
-import { useMessage, useNotification } from "naive-ui";
+import {ArrowBack, ArrowForward, TodayOutline} from "@vicons/ionicons5";
+import {useMessage, useNotification} from "naive-ui";
 import StageData from '@/components/labelcomp/StageData.vue'
-import type { Skip, Stage, Tag } from "@/types";
+import type {Skip, Stage, Tag} from "@/types";
 import axios from "axios";
+import TagData from "@/components/labelcomp/TagData.vue";
+import SkipData from "@/components/labelcomp/SkipData.vue";
 
 const notification = useNotification();
 const labelGet = axios.create({
   baseURL: "http://114.116.41.110:4002",
   timeout: 15000,
 });
+
 
 labelGet.interceptors.response.use(
   function (response) {
@@ -96,6 +107,7 @@ labelGet.interceptors.response.use(
     } else {
       console.log(error);
     }
+    data.value.isLoadingNum = 0
     return Promise.resolve(error.response);
   }
 );
@@ -108,18 +120,32 @@ const data = ref({
   ] as [number, number],
   stageName: "label" as string,
   skipNum: 100 as number,
-  stageList:{} as Stage,
-  tagList:[] as Tag[],
-  skipList:[] as Skip[],
+  stageList: {} as Stage,
+  tagList: [] as Tag[],
+  skipList: [] as Skip[],
   isLoadingNum: 0 as number,
 });
 
+const isShow = computed(() => {
+  return (
+    Object.getOwnPropertyNames(data.value.stageName).length > 0 ||
+    data.value.tagList.length > 0 ||
+    data.value.skipList.length > 0
+  )
+})
 
 const isLoading = computed(() => {
-  if (data.value.isLoadingNum == 0) return false;
-  else if (data.value.isLoadingNum == 1) return true;
-  else if (data.value.isLoadingNum == 2) return true;
-  else if (data.value.isLoadingNum == 3) return false;
+  if (data.value.isLoadingNum == 0) {
+    return false
+  } else if (data.value.isLoadingNum == 1) {
+    return true;
+  } else if (data.value.isLoadingNum == 2) {
+    return true;
+  } else if (data.value.isLoadingNum == 3) {
+    return true;
+  } else if (data.value.isLoadingNum == 4) {
+    return false;
+  }
 });
 
 const options = [
@@ -138,12 +164,12 @@ const shoutCuts = {
       dayjs().subtract(7, "day").valueOf(),
       dayjs().add(1, "day").startOf("day").valueOf(),
     ] as [number, number],
-  半个月: () =>
+  "半个月": () =>
     [
       dayjs().subtract(15, "day").valueOf(),
       dayjs().add(1, "day").startOf("day").valueOf(),
     ] as [number, number],
-  一个月: () =>
+  "一个月": () =>
     [
       dayjs().subtract(30, "day").valueOf(),
       dayjs().add(1, "day").startOf("day").valueOf(),
@@ -169,15 +195,15 @@ const changeTime = (to: string) => {
 };
 const message = useMessage();
 const onSearch = () => {
-  if (data.value.id == "") {
-    message.error("ID为空", {
-      duration: 1500,
-    });
-  } else {
-    data.value.isLoadingNum = 0;
+  if (data.value.id !== "") {
+    data.value.isLoadingNum = 1;
     getStageData();
     getTagData();
     getSkipData();
+  } else {
+    message.error("ID为空", {
+      duration: 1500,
+    });
   }
 };
 
@@ -190,7 +216,7 @@ const getStageData = async () => {
     })
     .then((res) => {
       data.value.stageList = res.data.result;
-      console.log(data.value.stageList)
+      data.value.isLoadingNum += 1
     });
 };
 const getTagData = async () => {
@@ -205,7 +231,8 @@ const getTagData = async () => {
     })
     .then((res) => {
       let list = res.data.result
-      data.value.tagList = list.splice(0,list.length-2)
+      data.value.tagList = list.splice(0, list.length - 2)
+      data.value.isLoadingNum += 1
     });
 };
 const getSkipData = async () => {
@@ -218,15 +245,17 @@ const getSkipData = async () => {
     })
     .then((res) => {
       data.value.skipList = res.data.result;
+      data.value.isLoadingNum += 1
     });
 };
 </script>
 
 <style scoped>
 .label-bar {
-  padding: 0 10px 10px 10px;
+  padding: 0 8px 8px 8px;
 }
-.label-view{
-  padding: 10px;
+
+.label-view {
+  padding: 16px;
 }
 </style>

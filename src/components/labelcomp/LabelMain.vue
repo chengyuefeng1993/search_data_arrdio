@@ -217,7 +217,10 @@ const getStageData = async () => {
     .then((res) => {
       data.value.stageList = res.data.result;
       data.value.isLoadingNum += 1
-    });
+    }).catch(err=>{
+      console.log(err)
+      data.value.isLoadingNum = 0
+    })
 };
 const getTagData = async () => {
   await labelGet
@@ -233,7 +236,10 @@ const getTagData = async () => {
       let list = res.data.result
       data.value.tagList = list.splice(0, list.length - 2)
       data.value.isLoadingNum += 1
-    });
+    }).catch(err=>{
+      console.log(err)
+      data.value.isLoadingNum = 0
+    })
 };
 const getSkipData = async () => {
   await labelGet
@@ -246,7 +252,10 @@ const getSkipData = async () => {
     .then((res) => {
       data.value.skipList = res.data.result;
       data.value.isLoadingNum += 1
-    });
+    }).catch(err=>{
+      console.log(err)
+      data.value.isLoadingNum = 0
+    })
 };
 </script>
 

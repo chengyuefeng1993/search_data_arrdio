@@ -201,6 +201,9 @@ const getReviewData = async () => {
       data.value.reviewData = res.data.result
       data.value.isLoading = false
     }
+  }).catch(err=>{
+    console.log(err)
+    data.value.isLoading = false
   })
 }
 

@@ -34,6 +34,7 @@ export default defineConfig({
   },
   build: {
     outDir: '../web',
+    cssCodeSplit:false
   },
   server: {
     port: 37161,

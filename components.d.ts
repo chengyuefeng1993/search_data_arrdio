@@ -33,6 +33,7 @@ declare module '@vue/runtime-core' {
     NSpin: typeof import('naive-ui')['NSpin']
     NTabPane: typeof import('naive-ui')['NTabPane']
     NTabs: typeof import('naive-ui')['NTabs']
+    ReveiwMain: typeof import('./src/components/reviewcomp/ReveiwMain.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SkipData: typeof import('./src/components/labelcomp/SkipData.vue')['default']

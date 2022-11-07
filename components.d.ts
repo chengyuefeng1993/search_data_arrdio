@@ -27,10 +27,12 @@ declare module '@vue/runtime-core' {
     NMenu: typeof import('naive-ui')['NMenu']
     NMessageProvider: typeof import('naive-ui')['NMessageProvider']
     NNotificationProvider: typeof import('naive-ui')['NNotificationProvider']
+    NPagination: typeof import('naive-ui')['NPagination']
     NScrollbar: typeof import('naive-ui')['NScrollbar']
     NSelect: typeof import('naive-ui')['NSelect']
     NSpace: typeof import('naive-ui')['NSpace']
     NSpin: typeof import('naive-ui')['NSpin']
+    NSwitch: typeof import('naive-ui')['NSwitch']
     NTabPane: typeof import('naive-ui')['NTabPane']
     NTabs: typeof import('naive-ui')['NTabs']
     ReveiwMain: typeof import('./src/components/reviewcomp/ReveiwMain.vue')['default']
@@ -39,5 +41,7 @@ declare module '@vue/runtime-core' {
     SkipData: typeof import('./src/components/labelcomp/SkipData.vue')['default']
     StageData: typeof import('./src/components/labelcomp/StageData.vue')['default']
     TagData: typeof import('./src/components/labelcomp/TagData.vue')['default']
+    TextView: typeof import('./src/components/reviewcomp/TextView.vue')['default']
+    VideoView: typeof import('./src/components/reviewcomp/VideoView.vue')['default']
   }
 }

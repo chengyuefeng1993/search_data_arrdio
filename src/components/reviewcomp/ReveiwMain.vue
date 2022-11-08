@@ -199,12 +199,12 @@ const getReviewData = async () => {
   }).then(res => {
     if (res.data.code == 200) {
       data.value.reviewData = res.data.result
-      data.value.isLoading = false
     }
   }).catch(err=>{
     console.log(err)
     data.value.isLoading = false
   })
+  data.value.isLoading = false
 }
 
 const pageNumChange = (page:number) => {

@@ -28,31 +28,31 @@
     </div>
     <n-divider style="margin: 0;padding:0"/>
     <n-spin :show="data.isLoading">
-    <div class="review-view">
-      <n-space wrap :size="10">
-        <template v-for="(item, index) in reviewList" :key="index">
-          <component
-            :is="views"
-            :reviewItem="item"
-            :historyList="item.answers[0].historyList"></component>
-        </template>
-      </n-space>
-    </div>
+      <div class="review-view">
+        <n-space wrap :size="10">
+          <template v-for="(item, index) in reviewList" :key="index">
+            <component
+              :is="views"
+              :reviewItem="item"
+              :historyList="item.answers[0].historyList"></component>
+          </template>
+        </n-space>
+      </div>
       <n-space justify="center" style="margin: 20px 0">
-      <n-pagination
-        :item-count="data.reviewData.totalSize"
-        :page-sizes="[10,30,50,100,300,500,1000]"
-        :page="data.reviewData.pageNo"
-        :page-size="data.reviewData.pageSize"
-        show-size-picker show-quick-jumper
-        @update:page="pageNumChange"
-        @update:page-size="pageSizeChange"
-        v-show="data.reviewData.totalSize>0"
-      >
-        <template #prefix>
-          <span>共{{data.reviewData.totalSize}}条</span>
-        </template>
-      </n-pagination>
+        <n-pagination
+          :item-count="data.reviewData.totalSize"
+          :page-sizes="[10,30,50,100,300,500,1000]"
+          :page="data.reviewData.pageNo"
+          :page-size="data.reviewData.pageSize"
+          show-size-picker show-quick-jumper
+          @update:page="pageNumChange"
+          @update:page-size="pageSizeChange"
+          v-show="data.reviewData.totalSize>0"
+        >
+          <template #prefix>
+            <span>共{{ data.reviewData.totalSize }}条</span>
+          </template>
+        </n-pagination>
       </n-space>
     </n-spin>
   </div>
@@ -108,14 +108,14 @@ const data = ref({
   pageSize: 30 as number,
   isLoading: false as boolean,
   reviewData: {} as ReviewType,
-  isFilter:false as boolean,
+  isFilter: false as boolean,
 });
 
 const reviewList = computed(() => {
-  if (data.value.isFilter){
-    return  data.value.reviewData.data?.filter((a) => a?.reviewUser == null)
-  }else {
-    return  data.value.reviewData.data
+  if (data.value.isFilter) {
+    return data.value.reviewData.data?.filter((a) => a?.reviewUser == null)
+  } else {
+    return data.value.reviewData.data
   }
 })
 const views = computed(() => {
@@ -200,26 +200,26 @@ const getReviewData = async () => {
     if (res.data.code == 200) {
       data.value.reviewData = res.data.result
     }
-  }).catch(err=>{
+    data.value.isLoading = false
+  }).catch(err => {
     console.log(err)
     data.value.isLoading = false
   })
-  data.value.isLoading = false
 }
 
-const pageNumChange = (page:number) => {
-  data.value.pageNum= page
+const pageNumChange = (page: number) => {
+  data.value.pageNum = page
   onSearch()
 }
-const pageSizeChange = (pageSize:number) => {
+const pageSizeChange = (pageSize: number) => {
   data.value.pageSize = pageSize
-  window.localStorage.setItem('pageSize',data.value.pageSize.toString())
+  window.localStorage.setItem('pageSize', data.value.pageSize.toString())
   onSearch()
 }
 
 onMounted(() => {
-  let a =  window.localStorage.getItem('pageSize')
-  if (a!=null) {
+  let a = window.localStorage.getItem('pageSize')
+  if (a != null) {
     data.value.pageSize = Number(a)
   }
 })
@@ -229,7 +229,8 @@ onMounted(() => {
 .review-bar {
   padding: 0 8px 8px 8px;
 }
-.review-view{
+
+.review-view {
   padding: 16px;
 }
 </style>

@@ -215,12 +215,16 @@ const getStageData = async () => {
       },
     })
     .then((res) => {
-      data.value.stageList = res.data.result;
-    }).catch(err=>{
+      if (res.data.code == 200) {
+        data.value.stageList = res.data.result;
+      }else {
+        data.value.stageList= {}
+      }
+      data.value.isLoadingNum += 1
+    }).catch(err => {
       console.log(err)
       data.value.isLoadingNum = 0
     })
-    data.value.isLoadingNum += 1
 };
 const getTagData = async () => {
   await labelGet
@@ -233,13 +237,17 @@ const getTagData = async () => {
       },
     })
     .then((res) => {
-      let list = res.data.result
-      data.value.tagList = list.splice(0, list.length - 2)
-    }).catch(err=>{
+      if (res.data.code == 200) {
+        let list = res.data.result
+        data.value.tagList = list.splice(0, list.length - 2)
+      }else {
+        data.value.tagList = []
+      }
+      data.value.isLoadingNum += 1
+    }).catch(err => {
       console.log(err)
       data.value.isLoadingNum = 0
     })
-    data.value.isLoadingNum += 1
 };
 const getSkipData = async () => {
   await labelGet
@@ -250,12 +258,16 @@ const getSkipData = async () => {
       },
     })
     .then((res) => {
-      data.value.skipList = res.data.result;
-    }).catch(err=>{
+      if (res.data.code == 200) {
+        data.value.skipList = res.data.result;
+      }else {
+        data.value.skipList = []
+      }
+      data.value.isLoadingNum += 1
+    }).catch(err => {
       console.log(err)
       data.value.isLoadingNum = 0
     })
-    data.value.isLoadingNum += 1
 };
 </script>
 

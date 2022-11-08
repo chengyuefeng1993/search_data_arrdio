@@ -1,7 +1,7 @@
 <template>
   <div class="video">
     <div class="caption">
-      <n-ellipsis :tooltip="{'width':'260px'}">
+      <n-ellipsis :tooltip="{'width':260}">
         {{ reviewItem.caption }}
       </n-ellipsis>
     </div>
@@ -14,7 +14,7 @@
       >
         <div v-for="(url,index) in imageList(reviewItem.name,reviewItem.frameIdList.length)">
         <n-card>
-          <n-button @click="window.open(url)">图片{{index}}</n-button>
+          <n-button @click="toImage(url)">图片{{index}}</n-button>
         </n-card>
         </div>
 
@@ -60,6 +60,9 @@ const imageList = (photoId: string, num: number) => {
 
 const toVideo = (url: string) => {
   window.open(`https://ml.corp.kuaishou.com${url}`)
+}
+const toImage = (url:string) => {
+  window.open(url)
 }
 
 </script>

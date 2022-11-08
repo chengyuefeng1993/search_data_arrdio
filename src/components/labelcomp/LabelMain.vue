@@ -218,7 +218,7 @@ const getStageData = async () => {
       if (res.data.code == 200) {
         data.value.stageList = res.data.result;
       }else {
-        data.value.stageList= {}
+        data.value.stageList= {} as Stage
       }
       data.value.isLoadingNum += 1
     }).catch(err => {

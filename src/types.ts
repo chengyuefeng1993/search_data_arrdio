@@ -1,28 +1,28 @@
 export type Stage = {
-  auditSkipCount?: number
-  auditWaitForMarkCount?: number
-  dataSourceId?: number
-  finishedCount?: number
-  markingCount?: number
-  markingHandlingCount?: number
-  markingSkipCount?: number
-  totalCount?: number
-  unAuditCount?: number
-  waitForMarkCount?: number
+  auditSkipCount: number
+  auditWaitForMarkCount: number
+  dataSourceId: number
+  finishedCount: number
+  markingCount: number
+  markingHandlingCount: number
+  markingSkipCount: number
+  totalCount: number
+  unAuditCount: number
+  waitForMarkCount: number
 }
 export type Tag = {
-  clearCount?: number
-  firstAuditCorrectCount?: number
-  firstAuditCorrectRatio?: string
-  firstAuditTotalCount?: number
-  statisticMarkedCount?: number
-  statisticTime?: number
-  totalMarkedCount?: number
-  userName?: string
+  clearCount: number
+  firstAuditCorrectCount: number
+  firstAuditCorrectRatio: string
+  firstAuditTotalCount: number
+  statisticMarkedCount: number
+  statisticTime: number
+  totalMarkedCount: number
+  userName: string
 }
 export type Skip = {
-  count?: number
-  userName?: string
+  count: number
+  userName: string
 }
 
 export type ReviewType = {
@@ -41,20 +41,20 @@ export type ReviewType = {
 }
 
 export type DataType = {
-  answers?: Array<Answers>
-  caption?: string
-  dataId?: number
-  defaultCategory?: string
-  isAtlas?: false
-  itemVoList?: Array<ItemVoList>
-  mediaEntityGroupList?: Array<string>
-  name?: string
-  reviewHistoryList?: Array<string>
-  reviewUser?: string
-  frameIdList?:Array<string>
-  innerUrl?:string
-  mediaUrl?:string
-  postCover?:string
+  answers: Array<Answers>
+  caption: string
+  dataId: number
+  defaultCategory: string
+  isAtlas: false
+  itemVoList: Array<ItemVoList>
+  mediaEntityGroupList: Array<string>
+  name: string
+  reviewHistoryList: Array<string>
+  reviewUser: string
+  frameIdList:Array<string>
+  innerUrl:string
+  mediaUrl:string
+  postCover:string
 }
 
 // @ts-ignore

@@ -7,7 +7,6 @@
       :pagination="false"
       bordered striped
       size="small"
-      @update:filters="handleUpdateFilter"
     />
     <n-divider style="margin: 5px 0;user-select: none">{{ tagList.length }}</n-divider>
   </div>

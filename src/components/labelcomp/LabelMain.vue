@@ -60,10 +60,10 @@
       <div class="label-view" v-show="isShow">
         <StageData :stageList="data.stageList"/>
         <n-grid cols="3" item-responsive :x-gap="10">
-          <n-grid-item span="0 768:2">
+          <n-grid-item span="3 768:2">
             <TagData :tagList="data.tagList" :id="data.id" :time="data.time"/>
           </n-grid-item>
-          <n-grid-item span="0 768:1">
+          <n-grid-item span="3 768:1">
             <SkipData :skipList="data.skipList" :skipNum="data.skipNum"/>
           </n-grid-item>
         </n-grid>

@@ -22,7 +22,7 @@ import type {Stage} from "@/types";
 const {stageList} = defineProps<{
   stageList: Stage
 }>()
-console.log(stageList)
+
 </script>
 <style scoped>
 .stage {

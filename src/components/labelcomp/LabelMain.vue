@@ -73,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import dayjs from "dayjs";
 import {ArrowBack, ArrowForward, TodayOutline} from "@vicons/ionicons5";
 import {useMessage, useNotification} from "naive-ui";
@@ -82,12 +82,14 @@ import type {Skip, Stage, Tag} from "@/types";
 import axios from "axios";
 import TagData from "@/components/labelcomp/TagData.vue";
 import SkipData from "@/components/labelcomp/SkipData.vue";
+import type {FilterOption} from "naive-ui/es/data-table/src/interface";
 
 const notification = useNotification();
 const labelGet = axios.create({
   baseURL: "http://114.116.41.110:4002",
   timeout: 15000,
 });
+
 
 
 labelGet.interceptors.response.use(
@@ -125,6 +127,7 @@ const data = ref({
   skipList: [] as Skip[],
   isLoadingNum: 0 as number,
 });
+
 
 const isShow = computed(() => {
   return (

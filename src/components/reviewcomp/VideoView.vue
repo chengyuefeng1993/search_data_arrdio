@@ -6,19 +6,7 @@
       </n-ellipsis>
     </div>
     <div class="img-view">
-      <n-button @click=showImage>图片</n-button>
-      <n-modal
-        v-model:show="data.imgShow"
-        preset="card"
-        title="图片"
-      >
-        <div v-for="(url,index) in imageList(reviewItem.name,reviewItem.frameIdList.length)">
-        <n-card>
-          <n-button @click="toImage(url)">图片{{index}}</n-button>
-        </n-card>
-        </div>
-
-      </n-modal>
+      <n-image width="250" height="300" :src="`http://114.116.41.110:4002/getimage?photoid=${reviewItem.name}&frameid=h`"/>
     </div>
     <div class="info">
       <span style="font-size: 16px">{{ reviewItem.defaultCategory }}</span><br>

@@ -1,14 +1,21 @@
 <template>
   <div class="tag" v-show="tagList.length>0">
     <n-divider style="margin: 5px 0;user-select: none;">标注数据</n-divider>
-    <n-data-table :columns="columns" :data="tagList" :pagination="false" bordered striped/>
+    <n-data-table
+      :columns="columns"
+      :data="tagList"
+      :pagination="false"
+      bordered striped
+      size="small"
+      @update:filters="handleUpdateFilter"
+    />
     <n-divider style="margin: 5px 0;user-select: none">{{ tagList.length }}</n-divider>
   </div>
 </template>
 
 <script setup lang="ts">
 
-import {computed, h} from 'vue'
+import {h, reactive} from 'vue'
 import type {Tag} from "@/types";
 import type {DataTableColumns} from "naive-ui";
 
@@ -18,11 +25,13 @@ const {tagList, id, time} = defineProps<{
   id: string,
   time: [number, number]
 }>()
-const columns: DataTableColumns<Tag> = [
+
+
+const columns = reactive<DataTableColumns<Tag>>([
   {
     title: '姓名',
     key: 'userName',
-    align: 'center'
+    align: 'center',
   },
   {
     title: '审核数量',
@@ -49,19 +58,20 @@ const columns: DataTableColumns<Tag> = [
         {
           style: {
             'color': row.firstAuditCorrectRatio === '100.00%' ? 'green' : 'red',
-            'cursor':'pointer'
+            'cursor': 'pointer'
           },
-          onClick:() => toWrong(row.userName)
+          onClick: () => toWrong(row.userName)
         },
         {default: () => row.firstAuditCorrectRatio}
       )
     }
   }
-]
+])
 
 const toWrong = (name: string) => {
   window.open(`https://ml.corp.kuaishou.com/label-frontend/allErrorShow?dataSourceId=${id}&userName=${name}&startTime=${time[0]}&endTime=${time[1]}`)
 }
+
 </script>
 <style scoped>
 .tag {

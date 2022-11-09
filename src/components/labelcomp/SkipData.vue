@@ -1,7 +1,7 @@
 <template>
   <div class="skip" v-show="skipList.length>0">
     <n-divider style="margin: 5px 0;user-select: none">暂跳数量</n-divider>
-    <n-data-table :columns="columns" :data="skipList" :pagination="false" bordered striped/>
+    <n-data-table :columns="columns" :data="skipList" :pagination="false" bordered striped size="small"/>
     <n-divider style="margin: 5px 0;user-select: none">{{skipList.length}}</n-divider>
   </div>
 </template>

@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
+import {createDiscreteApi} from "naive-ui";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -33,6 +34,17 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+})
+
+const {loadingBar} = createDiscreteApi(['loadingBar'])
+
+router.beforeEach((to,from ,next) => {
+  loadingBar.start()
+  next()
+})
+
+router.afterEach((to,from) => {
+  loadingBar.finish()
 })
 
 export default router

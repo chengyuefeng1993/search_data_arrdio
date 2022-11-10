@@ -51,7 +51,7 @@
             show-count
             @keyup.enter="onSearch"
           />
-          <n-button :focusable="false" @click="onSearch">搜索</n-button>
+          <n-button :focusable="false" @click="onSearch" :loading="isLoading">搜索</n-button>
         </n-input-group>
       </NSpace>
     </div>

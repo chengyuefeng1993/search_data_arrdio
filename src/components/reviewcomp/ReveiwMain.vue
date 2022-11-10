@@ -14,7 +14,7 @@
         <n-input-group>
           <n-input placeholder="包ID" v-model:value="data.id" clearable style="width: 130px" :maxlength="5" show-count
                    @keyup.enter="onSearch"/>
-          <n-button :focusable="false" @click="onSearch">搜索</n-button>
+          <n-button :focusable="false" @click="onSearch" :loading="data.isLoading">搜索</n-button>
         </n-input-group>
         <n-switch v-model:value="data.isFilter">
           <template #checked>

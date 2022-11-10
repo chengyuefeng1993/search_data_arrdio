@@ -30,12 +30,14 @@
     <n-spin :show="data.isLoading">
       <div class="review-view">
         <n-space wrap :size="10">
-          <template v-for="(item, index) in reviewList" :key="index">
-            <component
-              :is="views"
-              :reviewItem="item"
-              :historyList="item.answers[0].historyList"></component>
-          </template>
+          <KeepAlive>
+            <template v-for="(item, index) in reviewList" :key="index">
+              <component
+                :is="views"
+                :reviewItem="item"
+                :historyList="item.answers[0].historyList"></component>
+            </template>
+          </KeepAlive>
         </n-space>
       </div>
       <n-space justify="center" style="margin: 20px 0">

@@ -1,16 +1,16 @@
 <template>
   <div class="label">
-    <NTabs v-model:value="value" type="card" :addable="addable" :closable="closable" tabStyle="min-width:80px;"
-      @close="handleClose" @add="handleAdd" size="small">
-      <NTabPane v-for="pan in panels" :key="pan" :name="pan">
-        <LabelMain />
-      </NTabPane>
-    </NTabs>
+      <NTabs v-model:value="value" type="card" :addable="addable" :closable="closable" tabStyle="min-width:80px;"
+             @close="handleClose" @add="handleAdd" size="small">
+        <NTabPane v-for="pan in panels" :key="pan" :name="pan" display-directive="show">
+          <LabelMain/>
+        </NTabPane>
+      </NTabs>
   </div>
 </template>
 
 <script setup lang='ts'>
-import { computed, ref } from 'vue';
+import {computed, ref} from 'vue';
 import LabelMain from '@/components/labelcomp/LabelMain.vue'
 
 const value = ref(1)
@@ -29,7 +29,7 @@ const handleAdd = () => {
   value.value = newValue
 }
 const handleClose = (name: number) => {
-  const { value: panel } = panels
+  const {value: panel} = panels
   const nameIndex = panel.findIndex(panelName => panelName === name)
   if (!~nameIndex) return
   panel.splice(nameIndex, 1)
